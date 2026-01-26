@@ -169,5 +169,18 @@ func HollandPostAnswer(c *gin.Context) {
 		helpers.ErrorResponse(c, 400, c.Error(err))
 		return
 	}
+	fieldToCreate := map[string]interface{}{
+		"id_pelamar":  hollandTestRequest.IDPelamar,
+		"id_lowongan": hollandTestRequest.IDLowongan,
+		"id_ujian":    hollandTestRequest.IDUjian,
+		"nilai_r":     hollandTestRequest.NilaiR,
+		"nilai_i":     hollandTestRequest.NilaiI,
+		"nilai_a":     hollandTestRequest.NilaiA,
+		"nilai_s":     hollandTestRequest.NilaiS,
+		"nilai_e":     hollandTestRequest.NilaiE,
+		"nilai_k":     hollandTestRequest.NilaiK,
+	}
+	// configs.DB.Create(&fieldToCreate)
+	helpers.SuccessResponse(c, 200, fieldToCreate)
 
 }

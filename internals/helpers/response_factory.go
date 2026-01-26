@@ -27,7 +27,7 @@ func JSONResponse(c *gin.Context, statusCode int, data interface{}) {
  * @param err The error to be written as JSON.
  */
 func ErrorResponse(c *gin.Context, statusCode int, err error) {
-	c.JSON(statusCode, gin.H{"error": err.Error()})
+	c.JSON(statusCode, gin.H{"error": err})
 }
 
 /**
