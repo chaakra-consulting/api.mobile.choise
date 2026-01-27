@@ -166,7 +166,7 @@ func HollandTestQuestion(c *gin.Context) {
 func HollandPostAnswer(c *gin.Context) {
 	var hollandTestRequest requests.HollandTest
 	if err := c.ShouldBindBodyWith(&hollandTestRequest, binding.JSON); err != nil {
-		helpers.ErrorResponse(c, 400, c.Error(err))
+		helpers.ValidationErrorResponse(c, err)
 		return
 	}
 	fieldToCreate := map[string]interface{}{
