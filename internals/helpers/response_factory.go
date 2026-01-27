@@ -50,3 +50,13 @@ func SuccessResponse(c *gin.Context, statusCode int, data interface{}) {
 func BadRequestResponse(c *gin.Context, err error) {
 	c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 }
+
+/**
+ * ValidationErrorResponse writes a validation error response to the gin context with the given error messages.
+ * The response will be a JSON object with the key "errors" and the value of the error messages.
+ * @param c The gin context.
+ * @param err The error messages to be written as JSON.
+ */
+func ValidationErrorResponse(c *gin.Context, err error) {
+	c.JSON(http.StatusBadRequest, gin.H{"errors": ValidateInputJSON(c, err)})
+}

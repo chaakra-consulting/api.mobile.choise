@@ -15,5 +15,17 @@ func ApiRoutes(r *gin.Engine) {
 	//CFIT Test Routes
 	r.GET("/cfit-questions/:sub_tes", handlers.CFITQuestion)
 	r.GET("/cfit-questions/practice", handlers.CFITQuestionPractice)
-	r.POST("/cfit-questions/send", handlers.CFITPostAnswer)
+	r.POST("/cfit/send", handlers.CFITPostAnswer)
+
+	//DISC Test Routes
+	r.GET("/disc-questions", handlers.DISCQuestion)
+
+	//MSDT Test Routes
+	r.GET("/msdt-questions", handlers.MSDTQuestion)
+
+	//Cepat Teliti Test Routes
+	r.GET("/cepat-teliti-questions", handlers.CepatTelitiQuestion)
+
+	//Exam List Route
+	r.GET("/exam-list", handlers.ExamListHandler)
 }
