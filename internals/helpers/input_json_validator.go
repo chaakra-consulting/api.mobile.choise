@@ -37,7 +37,7 @@ func ValidateInputJSON(c *gin.Context, err error) []ErrorMsg {
 	if errors.As(err, &ve) {
 		out := make([]ErrorMsg, len(ve))
 		for i, fe := range ve {
-			out[i] = ErrorMsg{fe.Field(), getErrorMsg(fe)}
+			out[i] = ErrorMsg{ToSnakeCase(fe.Field()), getErrorMsg(fe)}
 		}
 		return out
 	}

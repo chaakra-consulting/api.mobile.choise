@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"api.choise/configs"
 	"api.choise/internals/helpers"
 	"api.choise/internals/models"
 	"api.choise/internals/requests"
@@ -169,18 +170,34 @@ func HollandPostAnswer(c *gin.Context) {
 		helpers.ValidationErrorResponse(c, err)
 		return
 	}
-	fieldToCreate := map[string]interface{}{
-		"id_pelamar":  hollandTestRequest.IDPelamar,
-		"id_lowongan": hollandTestRequest.IDLowongan,
-		"id_ujian":    hollandTestRequest.IDUjian,
-		"nilai_r":     hollandTestRequest.NilaiR,
-		"nilai_i":     hollandTestRequest.NilaiI,
-		"nilai_a":     hollandTestRequest.NilaiA,
-		"nilai_s":     hollandTestRequest.NilaiS,
-		"nilai_e":     hollandTestRequest.NilaiE,
-		"nilai_k":     hollandTestRequest.NilaiK,
+	hollandTestAnswer := models.HollandTestAnswerExam{
+		IDPelamar:  hollandTestRequest.IDPelamar,
+		IDLowongan: hollandTestRequest.IDLowongan,
+		IDUjian:    hollandTestRequest.IDUjian,
+		NilaiR:     hollandTestRequest.NilaiR,
+		NilaiI:     hollandTestRequest.NilaiI,
+		NilaiA:     hollandTestRequest.NilaiA,
+		NilaiS:     hollandTestRequest.NilaiS,
+		NilaiE:     hollandTestRequest.NilaiE,
+		NilaiK:     hollandTestRequest.NilaiK,
 	}
-	// configs.DB.Create(&fieldToCreate)
-	helpers.SuccessResponse(c, 200, fieldToCreate)
+	err := configs.DB.Where(
+		models.HollandTestAnswerExam{
+			IDPelamar:  hollandTestRequest.IDPelamar,
+			IDLowongan: hollandTestRequest.IDLowongan,
+			IDUjian:    hollandTestRequest.IDUjian,
+		}).Assign(
+		models.HollandTestAnswerExam{NilaiR: hollandTestRequest.NilaiR,
+			NilaiI: hollandTestRequest.NilaiI,
+			NilaiA: hollandTestRequest.NilaiA,
+			NilaiS: hollandTestRequest.NilaiS,
+			NilaiE: hollandTestRequest.NilaiE,
+			NilaiK: hollandTestRequest.NilaiK},
+	).FirstOrCreate(&hollandTestAnswer).Error
+	if err != nil {
+		helpers.ErrorResponse(c, 400, c.Error(err))
+		return
+	}
+	helpers.SuccessResponse(c, 200, "Data berhasil dimasukkan")
 
 }

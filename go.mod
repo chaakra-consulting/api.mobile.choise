@@ -27,6 +27,8 @@ require (
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/gohugoio/hugo v0.149.1 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
@@ -60,4 +62,7 @@ require (
 	gorm.io/gorm v1.31.1 // indirect
 )
 
-tool github.com/air-verse/air
+tool (
+	github.com/air-verse/air
+	github.com/golang-jwt/jwt
+)
