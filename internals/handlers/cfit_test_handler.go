@@ -28,6 +28,23 @@ func CFITQuestion(c *gin.Context) {
 	}
 	helpers.SuccessResponse(c, 200, cfitQuestions)
 }
+func CFITAnswerByExamNumber(c *gin.Context) {
+	var cfitAnswer models.CFITTestAnswer
+	nomor_soal := c.Query("nomor_soal")
+	id_pelamar := c.Query("id_pelamar")
+	sub_test := c.Param("sub_tes")
+	if sub_test == "" {
+		helpers.ErrorResponse(c, 400, errors.New("sub_test and nomor_soal query parameter is required"))
+		return
+	}
+
+	err := configs.DB.Where("subtes = ? AND nomor_soal = ? AND id_pelamar = ?", sub_test, nomor_soal, id_pelamar).First(&cfitAnswer).Error
+	if err != nil {
+		helpers.ErrorResponse(c, 400, err)
+		return
+	}
+	helpers.SuccessResponse(c, 200, cfitAnswer)
+}
 
 func CFITQuestionPractice(c *gin.Context) {
 	var cfitQuestions []models.CFITTestQuestion
@@ -59,43 +76,33 @@ func CFITPostAnswer(c *gin.Context) {
 		return
 	}
 
-	if subtes == 2 {
-		// Create a new CFITTestAnswerExam record
-		cfitAnswer := requests.CFITTestRequest{
-			IDPelamar:     cfitTestRequest.IDPelamar,
-			IDLowongan:    cfitTestRequest.IDLowongan,
-			IDUjian:       cfitTestRequest.IDUjian,
-			Subtes:        cfitTestRequest.Subtes,
-			NomorSoal:     cfitTestRequest.NomorSoal,
-			Jawaban:       cfitTestRequest.Jawaban,
-			KunciJawaban:  cfitTestRequest.KunciJawaban,
-			KunciJawaban2: cfitTestRequest.KunciJawaban2,
-		}
-
-		// err := configs.DB.Create(&cfitAnswer).Error
-		// if err != nil {
-		// 	helpers.ErrorResponse(c, 400, err)
-		// 	return
-		// }
-		helpers.SuccessResponse(c, 200, cfitAnswer)
-	} else {
-		// Create a new CFITTestAnswer record
-		cfitAnswer := requests.CFITTestRequest{
-			IDPelamar:    cfitTestRequest.IDPelamar,
-			IDLowongan:   cfitTestRequest.IDLowongan,
-			IDUjian:      cfitTestRequest.IDUjian,
-			Subtes:       cfitTestRequest.Subtes,
-			NomorSoal:    cfitTestRequest.NomorSoal,
-			Jawaban:      cfitTestRequest.Jawaban,
-			KunciJawaban: cfitTestRequest.KunciJawaban,
-		}
-
-		// err := configs.DB.Create(&cfitAnswer).Error
-		// if err != nil {
-		// 	helpers.ErrorResponse(c, 400, err)
-		// 	return
-		// }
-		helpers.SuccessResponse(c, 200, cfitAnswer)
+	cfitAnswer := models.CFITTestAnswer{
+		IDPelamar:  uint(cfitTestRequest.IDPelamar),
+		IDLowongan: uint(cfitTestRequest.IDLowongan),
+		IDUjian:    1,
+		Subtes:     c.Query("subtes"),
+		NomorSoal:  cfitTestRequest.NomorSoal,
+		Jawaban:    cfitTestRequest.Jawaban,
 	}
+	if subtes == 2 {
+		cfitAnswer.JawabanKunci = cfitTestRequest.JawabanKunci
+		cfitAnswer.JawabanKunci2 = cfitTestRequest.JawabanKunci2
+	}
+
+	err = configs.DB.Where(
+		models.CFITTestAnswer{
+			IDPelamar:  uint(cfitAnswer.IDPelamar),
+			IDLowongan: uint(cfitAnswer.IDLowongan),
+			NomorSoal:  cfitAnswer.NomorSoal,
+			IDUjian:    1,
+			Subtes:     c.Query("subtes"),
+		}).Assign(
+		models.CFITTestAnswer{Jawaban: cfitTestRequest.Jawaban},
+	).FirstOrCreate(&cfitAnswer).Error
+	if err != nil {
+		helpers.ErrorResponse(c, 400, c.Error(err))
+		return
+	}
+	helpers.SuccessResponse(c, 200, "Data berhasil dimasukkan")
 
 }
