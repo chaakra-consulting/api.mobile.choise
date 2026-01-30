@@ -6,6 +6,7 @@ type ApplicantUser struct {
 	gorm.Model
 	IDPelamar  uint        `gorm:"primaryKey;autoIncrement" json:"id_pelamar"`
 	IDLevel    uint        `json:"id_level"`
+	Email      string      `gorm:"unique;not null" json:"email"`
 	Username   string      `gorm:"unique;not null" json:"username"`
 	Password   string      `gorm:"not null" json:"-"`
 	Foto       string      `json:"foto"`

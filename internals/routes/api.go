@@ -9,8 +9,10 @@ import (
 func ApiRoutes(r *gin.Engine) {
 	r.GET("/ping", handlers.PingHandler)
 
-	//Login Route
+	//Authenticate Route
 	r.POST("/login", handlers.Login)
+	r.POST("/find-email", handlers.FindEmail)
+	r.POST("/reset-password", handlers.ResetPassword)
 
 	//Job Vacancy Routes
 	r.GET("/job-vacancy", middlewares.AuthMiddleware(), handlers.GetAvailableJobVacancy)
