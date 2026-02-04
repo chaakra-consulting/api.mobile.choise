@@ -15,7 +15,7 @@ func ExamListHandler(c *gin.Context) {
 	var msdtExam map[string]interface{}
 	var cepatTelitiExam map[string]interface{}
 
-	var data []map[string]interface{}
+	var data []interface{}
 
 	//fetch exam data
 	err := configs.DB.Table("tb_ujian").Find(&cfitExam).Error
@@ -30,14 +30,21 @@ func ExamListHandler(c *gin.Context) {
 	}
 
 	//combine exam data
-	data = make([]map[string]interface{}, 0)
-	data = append(data, map[string]interface{}{
-		"cfit":         cfitExam,
-		"holland":      hollandExam,
-		"disc":         discExam,
-		"msdt":         msdtExam,
-		"cepat_teliti": cepatTelitiExam,
-	})
+	// data = make([]map[string]interface{}, 0)
+	// data = append(data, map[string]interface{}{
+
+	// "cfit":         cfitExam,
+	// "holland":      hollandExam,
+	// "disc":         discExam,
+	// "msdt":         msdtExam,
+	// "cepat_teliti": cepatTelitiExam,
+	data = append(data,
+		cfitExam,
+		hollandExam,
+		cepatTelitiExam,
+		discExam,
+		msdtExam,
+	)
 
 	helpers.SuccessResponse(c, 200, data)
 }

@@ -32,7 +32,7 @@ func Login(c *gin.Context) {
 	log.Println(passwordField)
 
 	// Find the user
-	err := configs.DB.Unscoped().Where("username = ? AND password = ?", input.Username, passwordField).Find(&applicantUser).Error
+	err := configs.DB.Unscoped().Preload("UserData").Where("username = ? AND password = ?", input.Username, passwordField).Find(&applicantUser).Error
 	if err != nil {
 		helpers.ErrorResponse(c, http.StatusUnauthorized, c.Error(errors.New("invalid username or password")))
 		return
