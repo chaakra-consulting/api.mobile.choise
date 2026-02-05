@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"api.choise/configs"
@@ -29,18 +30,19 @@ func CFITQuestion(c *gin.Context) {
 	helpers.SuccessResponse(c, 200, cfitQuestions)
 }
 func CFITAnswerByExamNumber(c *gin.Context) {
-	var cfitAnswer models.CFITTestAnswer
-	nomor_soal := c.Query("nomor_soal")
+	var cfitAnswer []models.CFITTestAnswer
+	// nomor_soal := c.Query("nomor_soal")
 	id_pelamar := c.Query("id_pelamar")
+	id_lowongan := c.Query("id_lowongan")
 	sub_test := c.Param("sub_tes")
 	if sub_test == "" {
 		helpers.ErrorResponse(c, 400, errors.New("sub_test and nomor_soal query parameter is required"))
 		return
 	}
 
-	err := configs.DB.Where("subtes = ? AND nomor_soal = ? AND id_pelamar = ?", sub_test, nomor_soal, id_pelamar).First(&cfitAnswer).Error
+	err := configs.DB.Where("subtes = ?  AND id_pelamar = ? and id_lowongan = ?", sub_test, id_pelamar, id_lowongan).Order("nomor_soal ASC").Find(&cfitAnswer).Error
 	if err != nil {
-		helpers.ErrorResponse(c, 400, err)
+		helpers.ErrorResponse(c, 400, c.Error(err))
 		return
 	}
 	helpers.SuccessResponse(c, 200, cfitAnswer)
@@ -68,25 +70,25 @@ func CFITPostAnswer(c *gin.Context) {
 		helpers.ErrorResponse(c, 400, c.Error(errors.New("invalid subtes parameter")))
 		return
 	}
+	fmt.Println(subtes)
 
 	//declare struct to bind JSON request
 	var cfitTestRequest requests.CFITTestRequest
 	if err := c.ShouldBindBodyWith(&cfitTestRequest, binding.JSON); err != nil {
-		helpers.ValidationErrorResponse(c, err)
+		helpers.ValidationErrorResponse(c, c.Error(err))
 		return
 	}
 
 	cfitAnswer := models.CFITTestAnswer{
-		IDPelamar:  uint(cfitTestRequest.IDPelamar),
-		IDLowongan: uint(cfitTestRequest.IDLowongan),
-		IDUjian:    1,
-		Subtes:     c.Query("subtes"),
-		NomorSoal:  cfitTestRequest.NomorSoal,
-		Jawaban:    cfitTestRequest.Jawaban,
-	}
-	if subtes == 2 {
-		cfitAnswer.JawabanKunci = cfitTestRequest.JawabanKunci
-		cfitAnswer.JawabanKunci2 = cfitTestRequest.JawabanKunci2
+		IDPelamar:     uint(cfitTestRequest.IDPelamar),
+		IDLowongan:    uint(cfitTestRequest.IDLowongan),
+		IDUjian:       1,
+		Subtes:        c.Query("subtes"),
+		NomorSoal:     cfitTestRequest.NomorSoal,
+		Jawaban:       cfitTestRequest.Jawaban,
+		JawabanKunci:  cfitTestRequest.JawabanKunci,
+		Jawaban2:      cfitTestRequest.Jawaban2,
+		JawabanKunci2: cfitTestRequest.JawabanKunci2,
 	}
 
 	err = configs.DB.Where(
@@ -97,7 +99,11 @@ func CFITPostAnswer(c *gin.Context) {
 			IDUjian:    1,
 			Subtes:     c.Query("subtes"),
 		}).Assign(
-		models.CFITTestAnswer{Jawaban: cfitTestRequest.Jawaban},
+		models.CFITTestAnswer{
+			Jawaban:       cfitTestRequest.Jawaban,
+			JawabanKunci:  cfitAnswer.JawabanKunci,
+			Jawaban2:      cfitAnswer.Jawaban2,
+			JawabanKunci2: cfitAnswer.JawabanKunci2},
 	).FirstOrCreate(&cfitAnswer).Error
 	if err != nil {
 		helpers.ErrorResponse(c, 400, c.Error(err))
