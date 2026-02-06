@@ -22,7 +22,7 @@ func CFITQuestion(c *gin.Context) {
 		return
 	}
 
-	err := configs.DB.Where("subtes = ? AND type_soal = 'Ujian'", sub_test).Find(&cfitQuestions).Error
+	err := configs.DB.Where("subtes = ? AND type_soal = 'Ujian'", sub_test).Order("nomor_soal ASC").Find(&cfitQuestions).Error
 	if err != nil {
 		helpers.ErrorResponse(c, 400, err)
 		return

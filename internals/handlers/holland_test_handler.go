@@ -18,7 +18,6 @@ func HollandTestQuestion(c *gin.Context) {
 	hollandQuestions = []models.HollandTest{
 		//Realistic - I as
 		{ID: 1, QuestionText: "Praktis", Type: "Realistic", Identifier: "i_as"},
-		{ID: 2, QuestionText: "Atletis", Type: "Realistic", Identifier: "i_as"},
 		{ID: 3, QuestionText: "Berterus Terang", Type: "Realistic", Identifier: "i_as"},
 		{ID: 4, QuestionText: "Cenderung Mekanistik", Type: "Realistic", Identifier: "i_as"},
 		{ID: 5, QuestionText: "Pecinta Alam", Type: "Realistic", Identifier: "i_as"},
@@ -26,7 +25,6 @@ func HollandTestQuestion(c *gin.Context) {
 
 		//Realistic - I can
 		{ID: 7, QuestionText: "Memperbaiki peralatan elektronik", Type: "Realistic", Identifier: "i_can"},
-		{ID: 8, QuestionText: "Memecahkan masalah mekanistik", Type: "Realistic", Identifier: "i_can"},
 		{ID: 9, QuestionText: "Memasang/merakit barang elektronik", Type: "Realistic", Identifier: "i_can"},
 		{ID: 10, QuestionText: "Melakukan kegiatan olahraga", Type: "Realistic", Identifier: "i_can"},
 		{ID: 11, QuestionText: "Membaca petunjuk arah", Type: "Realistic", Identifier: "i_can"},
@@ -34,7 +32,6 @@ func HollandTestQuestion(c *gin.Context) {
 
 		//Realistic - I like
 		{ID: 13, QuestionText: "Kegiatan yang menuntut untuk berpikir secara kritis", Type: "Realistic", Identifier: "i_like"},
-		{ID: 14, QuestionText: "Pekerjaan Lapangan", Type: "Realistic", Identifier: "i_like"},
 		{ID: 15, QuestionText: "Kegiatan yang aktif secara fisik", Type: "Realistic", Identifier: "i_like"},
 		{ID: 16, QuestionText: "Keterampilan tangan", Type: "Realistic", Identifier: "i_like"},
 		{ID: 17, QuestionText: "Kegiatan merakit atau menyusun sesuatu", Type: "Realistic", Identifier: "i_like"},
@@ -76,7 +73,7 @@ func HollandTestQuestion(c *gin.Context) {
 
 		//Artistic - I can
 		{ID: 45, QuestionText: "Membuat sketsa, menggambar dan melukis", Type: "Artistic", Identifier: "i_can"},
-		{ID: 46, QuestionText: "Menmainkan alat musik", Type: "Artistic", Identifier: "i_can"},
+		{ID: 46, QuestionText: "Memainkan alat musik", Type: "Artistic", Identifier: "i_can"},
 		{ID: 47, QuestionText: "Menulis cerita,puisi, maupun lirik lagu", Type: "Artistic", Identifier: "i_can"},
 		{ID: 48, QuestionText: "Merancang busana atau interior ruangan", Type: "Artistic", Identifier: "i_can"},
 		{ID: 49, QuestionText: "-", Type: "Artistic", Identifier: "i_can"},
@@ -157,7 +154,7 @@ func HollandTestQuestion(c *gin.Context) {
 		{ID: 103, QuestionText: "Terpilih untuk mewakili suatu kegiatan", Type: "Enterprising", Identifier: "i_like"},
 		{ID: 104, QuestionText: "Memenangkan suatu penghargaan kepemimpinan atau penjualan", Type: "Enterprising", Identifier: "i_like"},
 		{ID: 105, QuestionText: "Memulai kampanye politik", Type: "Enterprising", Identifier: "i_like"},
-		{ID: 106, QuestionText: "Bertem dengan orang penting", Type: "Enterprising", Identifier: "i_like"},
+		{ID: 106, QuestionText: "Bertemu dengan orang penting", Type: "Enterprising", Identifier: "i_like"},
 		{ID: 107, QuestionText: "-", Type: "Enterprising", Identifier: "i_like"},
 	}
 

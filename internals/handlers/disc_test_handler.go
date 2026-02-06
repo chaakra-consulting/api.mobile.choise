@@ -51,10 +51,10 @@ func DISCPostAnswer(c *gin.Context) {
 }
 
 func DISCAnswerByExamNumber(c *gin.Context) {
-	var discAnswer models.DISCTestAnswer
-	nomor_soal := c.Query("nomor_soal")
+	var discAnswer []models.DISCTestAnswer
+	id_lowongan := c.Query("id_lowongan")
 	id_pelamar := c.Query("id_pelamar")
-	err := configs.DB.Where("no_soal = ? AND id_pelamar = ?", nomor_soal, id_pelamar).First(&discAnswer).Error
+	err := configs.DB.Where("id_pelamar = ? and id_lowongan", id_pelamar, id_lowongan).Find(&discAnswer).Error
 	if err != nil {
 		helpers.ErrorResponse(c, 400, err)
 		return
