@@ -20,10 +20,10 @@ func MSDTQuestion(c *gin.Context) {
 }
 
 func MSDTAnswerByExamNumber(c *gin.Context) {
-	var msdtAnswer models.MSDTTestAnswer
-	nomor_soal := c.Query("nomor_soal")
+	var msdtAnswer []models.MSDTTestAnswer
+	id_lowongan := c.Query("id_lowongan")
 	id_pelamar := c.Query("id_pelamar")
-	err := configs.DB.Where("no_soal = ? AND id_pelamar = ?", nomor_soal, id_pelamar).First(&msdtAnswer).Error
+	err := configs.DB.Where("id_lowongan = ? AND id_pelamar = ?", id_lowongan, id_pelamar).Find(&msdtAnswer).Error
 	if err != nil {
 		helpers.ErrorResponse(c, 400, err)
 		return
@@ -34,7 +34,7 @@ func MSDTAnswerByExamNumber(c *gin.Context) {
 func MSDTPostAnswer(c *gin.Context) {
 	var msdtTestRequest requests.MSDTTestRequest
 	if err := c.ShouldBindBodyWith(&msdtTestRequest, binding.JSON); err != nil {
-		helpers.ValidationErrorResponse(c, err)
+		helpers.ValidationErrorResponse(c, c.Error(err))
 		return
 	}
 
